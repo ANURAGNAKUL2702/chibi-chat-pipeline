@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Share2, Send } from "lucide-react";
+import { ArrowLeft, Share2, Send, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 interface Message {
@@ -16,8 +16,8 @@ function Room() {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([
     {
-      message: "Hi there",
-      name: "Anonymous",
+      message: "Welcome to the chat room! 👋",
+      name: "System",
     },
   ]);
 
@@ -65,7 +65,6 @@ function Room() {
   }, [roomId]);
 
   useEffect(() => {
-    // Scroll to the latest message whenever messages update
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -89,38 +88,56 @@ function Room() {
     const url = `${window.location.origin}/room/${roomId}`;
     try {
       await navigator.clipboard.writeText(url);
-      toast.success("Room link copied to clipboard!");
+      toast.success("Room link copied! Share with friends 🎉");
     } catch (err) {
-      toast.error("Failed to copy room link");
+      toast.error("Oops! Couldn't copy the link");
     }
   };
+  function leaveRoom() {
+    navigate("/");
+  }
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
+    <div className="h-screen flex flex-col bg-cartoon-bg text-cartoon-text">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-gray-800/70 backdrop-blur-lg shadow-md border-b border-gray-700">
+      <div className="sticky top-0 z-10 bg-cartoon-light/80 backdrop-blur-lg shadow-lg border-b-2 border-cartoon-accent/20">
         <div className="flex justify-between items-center p-4">
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/")}
-              className="p-2 rounded-lg text-gray-400 hover:text-gray-200"
+              className="p-2 rounded-xl text-cartoon-accent hover:bg-cartoon-accent/10 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-6 h-6" />
             </button>
-            <div className="ml-4">
-              <h1 className="text-lg font-semibold">Room: {roomId}</h1>
-              <p className="text-sm text-gray-400">
-                {name?.trim() || "Anonymous"}
+            <div>
+              <h1 className="text-xl font-bold text-cartoon-accent">
+                Room: {roomId}
+              </h1>
+              <p className="text-sm text-cartoon-text">
+                Chatting as {name?.trim() || "Anonymous"}
               </p>
             </div>
           </div>
-          <button
-            onClick={shareRoom}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all"
-          >
-            <Share2 className="w-4 h-4" />
-            <span>Share</span>
-          </button>
+          <div className="flex gap-4">
+            {" "}
+            {/* Flex container for both buttons */}
+            <button
+              onClick={leaveRoom}
+              className="flex items-center gap-2 px-5 py-2.5 bg-cartoon-accent text-cartoon-light rounded-xl
+                 transition-all hover:bg-cartoon-accent/90 hover:scale-105 active:scale-100"
+            >
+              <ArrowLeft className="w-4 h-4" /> {/* Fix icon */}
+              <span>Leave Room</span>
+            </button>
+            <button
+              onClick={shareRoom}
+              className="flex items-center gap-2 px-5 py-2.5 bg-cartoon-accent text-cartoon-light rounded-xl
+                 transition-all hover:bg-cartoon-accent/90 hover:scale-105 active:scale-100"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>Share Room</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -134,13 +151,16 @@ function Room() {
             }`}
           >
             <div
-              className={`max-w-[70%] rounded-xl px-4 py-3 ${
+              className={`max-w-[70%] rounded-2xl px-5 py-3 ${
                 msg.name === name
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-700/90 text-gray-200"
-              }`}
+                  ? "bg-cartoon-accent text-cartoon-light"
+                  : "bg-cartoon-light text-cartoon-text"
+              } shadow-lg`}
             >
-              <div className="text-sm opacity-75 mb-1">{msg.name}</div>
+              <div className="text-sm opacity-75 mb-1 flex items-center gap-2">
+                {msg.name}
+                {msg.name === "System" && <Sparkles className="w-3 h-3" />}
+              </div>
               <div className="break-words">{msg.message}</div>
             </div>
           </div>
@@ -149,23 +169,29 @@ function Room() {
       </div>
 
       {/* Input Section */}
-      <div className="border-t border-gray-700 bg-gray-800 p-4">
-        <div className="mb-4">
-          <label className="text-sm text-gray-400">Set your name</label>
+      <div className="border-t-2 border-cartoon-accent/20 bg-cartoon-light p-4 space-y-4">
+        <div>
+          <label className="text-sm text-cartoon-text block mb-2">
+            Your Name
+          </label>
           <input
             type="text"
             placeholder="Enter your name"
             value={name || ""}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            className="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-3 bg-cartoon-bg/50 border-2 border-cartoon-accent/20 rounded-xl
+                     text-cartoon-text placeholder-cartoon-text/60
+                     focus:ring-4 focus:ring-cartoon-accent/20 focus:border-cartoon-accent
+                     outline-none transition-all"
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <input
-            className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            className="flex-1 px-4 py-3 bg-cartoon-bg/50 border-2 border-cartoon-accent/20 rounded-xl
+                     text-cartoon-text placeholder-cartoon-text/60
+                     focus:ring-4 focus:ring-cartoon-accent/20 focus:border-cartoon-accent
+                     outline-none transition-all"
             type="text"
             placeholder="Type your message..."
             value={message}
@@ -176,9 +202,11 @@ function Room() {
           />
           <button
             onClick={sendMessage}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center gap-2 transition-all"
+            className="px-5 py-3 bg-cartoon-accent text-cartoon-light rounded-xl
+                     flex items-center gap-2 transition-all hover:bg-cartoon-accent/90
+                     hover:scale-105 active:scale-100 shadow-lg shadow-cartoon-accent/20"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
             <span className="hidden sm:inline">Send</span>
           </button>
         </div>

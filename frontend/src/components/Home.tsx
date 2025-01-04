@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 const Home = () => {
@@ -18,36 +18,43 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg text-center w-full max-w-md mx-4">
-        <div className="flex justify-center mb-6">
-          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-            <MessageSquare className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+    <div className="min-h-screen flex flex-col justify-center items-center bg-cartoon-bg">
+      <div className="bg-cartoon-light p-8 rounded-[2rem] shadow-2xl text-center w-full max-w-md mx-4 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cartoon-accent/30 to-cartoon-accent" />
+
+        <div className="flex justify-center mb-8">
+          <div className="p-4 bg-cartoon-accent/10 rounded-2xl animate-float">
+            <MessageSquare className="w-12 h-12 text-cartoon-accent" />
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-          Welcome to Chat Rooms
+        <h1 className="text-3xl font-bold mb-3 text-cartoon-accent">
+          Chat Rooms
         </h1>
 
-        <p className="text-gray-600 dark:text-gray-300 mb-8">
-          Enter a Room ID to join or generate a new one
+        <p className="text-cartoon-text mb-8 text-lg">
+          Join a room or create your own!
         </p>
 
         <div className="space-y-4">
-          <input
-            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl 
-                     text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition duration-200"
-            placeholder="Enter Room ID"
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              className="w-full px-6 py-4 bg-cartoon-bg/50 border-2 border-cartoon-accent/20 rounded-2xl
+                       text-cartoon-text placeholder-cartoon-text/60 text-lg
+                       focus:ring-4 focus:ring-cartoon-accent/20 focus:border-cartoon-accent
+                       outline-none transition duration-300"
+              placeholder="Enter Room ID"
+              value={room}
+              onChange={(e) => setRoom(e.target.value)}
+            />
+            <Sparkles className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-cartoon-accent/40" />
+          </div>
 
           <button
             onClick={joinRoom}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-xl
-                     transition duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-cartoon-accent text-cartoon-light font-medium py-4 px-6 rounded-2xl
+                     transition duration-300 transform hover:scale-[1.02] active:scale-[0.98]
+                     hover:bg-cartoon-accent/90 text-lg shadow-lg shadow-cartoon-accent/20"
           >
             Join Room
           </button>
@@ -56,11 +63,14 @@ const Home = () => {
             onClick={() => {
               const newRoom = generateRoomId();
               setRoom(newRoom);
-              toast.info(`Generated room ID: ${newRoom}`);
+              toast.success(`Room created: ${newRoom}`, {
+                icon: "🎉",
+              });
             }}
-            className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 
-                     text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-xl
-                     transition duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-cartoon-bg font-medium py-4 px-6 rounded-2xl text-lg
+                     text-cartoon-accent border-2 border-cartoon-accent/20
+                     transition duration-300 transform hover:scale-[1.02] active:scale-[0.98]
+                     hover:bg-cartoon-accent/10"
           >
             Generate New Room
           </button>

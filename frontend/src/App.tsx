@@ -6,8 +6,16 @@ import Room from "./components/Room";
 function App() {
   return (
     <BrowserRouter>
-      <Toaster position="top-center" expand={true} richColors />
-      <main className="">
+      <Toaster
+        position="top-center"
+        expand={true}
+        richColors
+        theme="light"
+        style={{
+          fontFamily: "inherit",
+        }}
+      />
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/room/:roomId" element={<Room />} />
