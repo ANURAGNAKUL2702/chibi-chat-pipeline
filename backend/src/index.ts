@@ -5,6 +5,7 @@ const wss = new WebSocketServer({ port: 5050 });
 interface User {
   socket: WebSocket;
   room: string;
+  name: string;
 }
 
 let allSockets: User[] = [];
@@ -17,6 +18,7 @@ wss.on("connection", (socket) => {
       allSockets.push({
         socket,
         room: parsedMessage.payload.roomId,
+        name: parsedMessage.payload.name,
       });
     }
 
