@@ -26,7 +26,7 @@ function Room() {
   if (!roomId) return <div>Invalid room</div>;
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:5050");
+    const ws = new WebSocket("https://chibi-chat.onrender.com");
 
     ws.onopen = () => {
       ws.send(
