@@ -1,6 +1,7 @@
 {
-  "name": "chibichat",
+  "name": "chibichat-backend",
   "version": "1.0.0",
+  "description": "Backend for Chibi Chat - WebSocket chat app",
   "main": "index.js",
   "scripts": {
     "dev": "tsc -b && node ./dist/index.js",
@@ -8,14 +9,13 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["chat", "typescript", "websocket", "backend"],
+  "author": "Anurag",
+  "license": "MIT",
   "dependencies": {
-    "@types/ws": "^8.5.13",
     "typescript": "^5.7.2",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "@types/ws": "^8.5.13"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
