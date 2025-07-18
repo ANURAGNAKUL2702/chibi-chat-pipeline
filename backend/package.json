@@ -1,21 +1,19 @@
 {
-  "name": "chibichat",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for Chibi Chat",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -b && node ./dist/index.js",
-    "build": "tsc -b",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "start": "node app.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Anurag",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "typescript": "^5.4.5"
+    "eslint": "^8.0.0"
   }
 }
