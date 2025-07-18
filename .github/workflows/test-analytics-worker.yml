@@ -1,25 +1,20 @@
-name: 🧪 Test Backend
+name: 🧪 Test Analytics Worker
 
 on:
   push:
     branches: [main]
     paths:
-      - 'backend/**'
-      - '.github/workflows/test-backend.yml'
+      - 'analytics-worker/**'
+      - '.github/workflows/test-analytics-worker.yml'
   pull_request:
     paths:
-      - 'backend/**'
-      - '.github/workflows/test-backend.yml'
+      - 'analytics-worker/**'
+      - '.github/workflows/test-analytics-worker.yml'
   workflow_dispatch:
-    inputs:
-      reason:
-        description: "Why are you retrying this workflow?"
-        required: false
-        default: "Manual retry - no reason given"
 
 jobs:
   test:
-    name: 🧪 Backend CI
+    name: 🧪 Analytics Worker CI
     runs-on: ubuntu-latest
 
     steps:
@@ -29,21 +24,15 @@ jobs:
       - name: 💾 Cache node_modules
         uses: actions/cache@v4
         with:
-          path: backend/node_modules
-          key: ${{ runner.os }}-backend-${{ hashFiles('backend/package-lock.json') }}
+          path: analytics-worker/node_modules
+          key: ${{ runner.os }}-analytics-${{ hashFiles('analytics-worker/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-backend-
+            ${{ runner.os }}-analytics-
 
       - name: 📦 Install Dependencies
         run: npm install
-        working-directory: backend
+        working-directory: analytics-worker
 
       - name: ✅ Run Tests
-        run: echo "backend tests here"
-        working-directory: backend
-
-      - name: 🔁 Log Manual Retry Reason (if any)
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: echo "🔁 Manual retry reason:${REASON}"
-        env:
-          REASON: ${{ github.event.inputs.reason }}
+        run: echo "analytics tests here"
+        working-directory: analytics-worker
