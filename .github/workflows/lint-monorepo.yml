@@ -1,0 +1,58 @@
+name: 🔍 Lint Monorepo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '.github/workflows/lint-monorepo.yml'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '.github/workflows/lint-monorepo.yml'
+  workflow_dispatch:  # Manual trigger from GitHub UI
+
+jobs:
+  lint-frontend:
+    name: 🧼 Lint Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 🛠️ Install Dependencies
+        run: npm ci
+
+      - name: 🧹 Run Lint with Fix
+        run: npm run lint
+
+  lint-backend:
+    name: 🧼 Lint Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 🛠️ Install Dependencies
+        run: npm ci
+
+      - name: 🧹 Run Lint with Fix
+        run: npm run lint
