@@ -1,0 +1,45 @@
+name: 🧹 Auto Lint Fix Monorepo
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.jsx'
+  workflow_dispatch:
+
+jobs:
+  autofix:
+    name: 🔧 Run ESLint Auto-Fix
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        folder: [frontend, backend, analytics-worker, shared-libs]
+
+    steps:
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Restore Cache (node_modules)
+        uses: actions/cache@v4
+        with:
+          path: ${{ matrix.folder }}/node_modules
+          key: ${{ matrix.folder }}-node-modules-${{ hashFiles(format('{0}/package-lock.json', matrix.folder)) }}
+          restore-keys: |
+            ${{ matrix.folder }}-node-modules-
+
+      - name: 📥 Install Dependencies
+        working-directory: ${{ matrix.folder }}
+        run: npm ci
+
+      - name: 🧹 Run ESLint Auto-Fix
+        working-directory: ${{ matrix.folder }}
+        run: npm run lint -- --fix
+
+      - name: ⬆️ Commit & Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(lint): auto-fix by ESLint 🚀"

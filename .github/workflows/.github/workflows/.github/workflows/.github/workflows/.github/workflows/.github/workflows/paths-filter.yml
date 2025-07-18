@@ -1,0 +1,37 @@
+# 📍 File: .github/workflows/paths-filter.yml
+
+name: 🔍 Detect Folder Changes
+
+on:
+  pull_request:
+    paths:
+      - '**/*'
+  push:
+    branches:
+      - main
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      docker: ${{ steps.filter.outputs.docker }}
+      deploy: ${{ steps.filter.outputs.deploy }}
+    steps:
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: 🧠 Paths Filter
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+            docker:
+              - 'docker/**'
+            deploy:
+              - 'deploy/**'

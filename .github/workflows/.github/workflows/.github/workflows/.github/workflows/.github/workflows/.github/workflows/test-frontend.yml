@@ -1,0 +1,42 @@
+name: 🧪 Test Frontend
+
+on:
+  workflow_run:
+    workflows: ["🔍 Detect Folder Changes"]
+    types:
+      - completed
+
+jobs:
+  frontend-tests:
+    if: ${{ needs.filter.outputs.frontend == 'true' }}
+    needs: filter
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 📥 Install Dependencies
+        run: npm ci
+
+      - name: 💅 Run ESLint (autofix)
+        run: npm run lint -- --fix || true
+
+      - name: 🔨 Vite Build
+        run: npm run build
+
+      - name: 🐳 Docker Build (Frontend)
+        run: docker build -t chibi-frontend:latest -f ../docker/frontend.Dockerfile .
+
+      - name: ✅ Success Message
+        run: echo "✅ Frontend pipeline completed successfully!"
