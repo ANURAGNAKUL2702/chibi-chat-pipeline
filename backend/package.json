@@ -4,10 +4,12 @@
   "description": "Backend for Chibi Chat - WebSocket chat app",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -b && node ./dist/index.js",
-    "build": "tsc -b",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+  "dev": "tsc -b && node ./dist/index.js",
+  "build": "tsc -b",
+  "lint": "eslint . --ext .ts",
+  "lint:fix": "eslint . --ext .ts --fix"
+ }
+
   },
   "keywords": ["chat", "typescript", "websocket", "backend"],
   "author": "Anurag",
