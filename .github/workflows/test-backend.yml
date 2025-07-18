@@ -38,6 +38,21 @@ jobs:
         run: npm install
         working-directory: backend
 
+      - name: 🧹 Lint and Auto-Fix
+        run: |
+          npm run lint -- --fix
+        working-directory: backend
+
+      - name: 📤 Commit Fixed Code (on PR or Manual Retry)
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "🔧 Auto-fixed lint issues"
+          git push
+        working-directory: backend
+
       - name: ✅ Run Tests
         run: echo "backend tests here"
         working-directory: backend
@@ -47,4 +62,3 @@ jobs:
         run: echo "🔁 Manual retry reason:${REASON}"
         env:
           REASON: ${{ github.event.inputs.reason }}
-
