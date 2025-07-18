@@ -21,7 +21,17 @@ jobs:
       - name: ⬇️ Checkout Code
         uses: actions/checkout@v4
 
+      - name: 🔍 Check if analytics-worker folder exists
+        id: check_folder
+        run: |
+          if [ -d "analytics-worker" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: 💾 Cache node_modules
+        if: steps.check_folder.outputs.exists == 'true'
         uses: actions/cache@v4
         with:
           path: analytics-worker/node_modules
@@ -30,9 +40,11 @@ jobs:
             ${{ runner.os }}-analytics-
 
       - name: 📦 Install Dependencies
+        if: steps.check_folder.outputs.exists == 'true'
         run: npm install
         working-directory: analytics-worker
 
       - name: ✅ Run Tests
+        if: steps.check_folder.outputs.exists == 'true'
         run: echo "analytics tests here"
         working-directory: analytics-worker
