@@ -1,3 +1,4 @@
+
 name: 🧪 Test Analytics Worker
 
 on:
@@ -11,11 +12,6 @@ on:
       - 'analytics-worker/**'
       - '.github/workflows/test-analytics-worker.yml'
   workflow_dispatch:
-    inputs:
-      reason:
-        description: "Why are you retrying this workflow?"
-        required: false
-        default: "Manual retry - no reason given"
 
 jobs:
   test:
@@ -26,17 +22,7 @@ jobs:
       - name: ⬇️ Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🔍 Check if analytics-worker folder exists
-        id: check_folder
-        run: |
-          if [ -d "analytics-worker" ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: 💾 Cache node_modules
-        if: steps.check_folder.outputs.exists == 'true'
         uses: actions/cache@v4
         with:
           path: analytics-worker/node_modules
@@ -45,16 +31,9 @@ jobs:
             ${{ runner.os }}-analytics-
 
       - name: 📦 Install Dependencies
-        if: steps.check_folder.outputs.exists == 'true'
         run: npm install
         working-directory: analytics-worker
 
       - name: ✅ Run Tests
-        if: steps.check_folder.outputs.exists == 'true'
         run: echo "analytics tests here"
         working-directory: analytics-worker
-
-      - name: 🔁 Log Manual Retry Reason (if any)
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          echo "🔁 Manual retry reason: ${{ github.event.inputs.reason }}"
